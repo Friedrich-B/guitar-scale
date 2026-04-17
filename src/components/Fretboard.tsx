@@ -1,7 +1,7 @@
 import type { ReactElement } from "react";
 import { Fret } from "./Fret";
 import s from './Fretboard.module.scss';
-import { NOTES } from "../helper";
+import { NOTES, safeCopy } from "../helper";
 
 
 interface Props {
@@ -15,7 +15,7 @@ const FRET_COUNT = 24;
 
 const getNotesForFretboard = (tuning: string[]): string[][] => {
     return tuning.map(rootNote => {
-        const notes = JSON.parse(JSON.stringify(NOTES));
+        const notes = safeCopy(NOTES);
         const firstNoteAfterRoot = notes.indexOf(rootNote) + 1;
 
         const rotatedNotes = [

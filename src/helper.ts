@@ -2,6 +2,12 @@ export function style(classes: string[]): string {
     return classes.join(' ');
 }
 
+export function safeCopy<T>(value: T): T {
+    return JSON.parse(
+        JSON.stringify(value),
+    );
+}
+
 export const NOTES = [
     'A',
     'A#',
@@ -16,5 +22,3 @@ export const NOTES = [
     'G',
     'G#',
 ];
-
-// todo eventually add a "safeCopy" function (parse(stringify()))

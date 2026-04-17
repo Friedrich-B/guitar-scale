@@ -42,8 +42,6 @@ export function Fret(props: Props): ReactElement {
         </div>;
     }).reverse();
 
-    // TODO the strings should be rendered in opposit order
-
     return <div className={s.Fret}>
         {inlay}
         <div className={s.Notes}>
