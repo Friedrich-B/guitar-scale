@@ -15,8 +15,6 @@ const FRET_COUNT = 12; // only for testing, remove
 
 
 const getNotesForFretboard = (tuning: string[]): string[][] => {
-    // could be optimized for the case multiple strings are tuned to the same note
-
     return tuning.map(rootNote => {
         const notes = JSON.parse(JSON.stringify(NOTES));
         const firstNoteAfterRoot = notes.indexOf(rootNote) + 1;
@@ -30,21 +28,37 @@ const getNotesForFretboard = (tuning: string[]): string[][] => {
     });
 };
 
+const createNoteLookupForFrets = (tuning: string[]): string[][] => {
+    const calculatedNotes = getNotesForFretboard(tuning);
+    const lookup = [];
+
+    for (let noteIndex = 0; noteIndex < NOTES.length; noteIndex++) {
+        const notesPerFret = [];
+
+        for (let stringIndex = 0; stringIndex < tuning.length; stringIndex++) {
+            notesPerFret.push(calculatedNotes[stringIndex][noteIndex])
+        }
+
+        lookup.push(notesPerFret);
+    }
+
+    // doubling the lookup has better readability than doing math with the fretIndex
+    return [...lookup, ...lookup];
+}
+
 const getFretboard = (
     tuning: string[],
     scale: string[],
 ): ReactElement[] => {
     const frets: ReactElement[] = [];
 
-    const notesByString = getNotesForFretboard(tuning);
-    console.log(notesByString);
-    // todo now make lookup for single fret
+    const noteLookUp = createNoteLookupForFrets(tuning);
 
-    for (let i = 1; i <= FRET_COUNT; i++) {
+    for (let fretIndex = 0; fretIndex < FRET_COUNT; fretIndex++) {
         frets.push(
             <Fret
-                fretNumber={i}
-                notes={[]} // todo
+                fretNumber={fretIndex + 1}
+                notes={noteLookUp[fretIndex]}
                 scale={scale}
             />
         );
