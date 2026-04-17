@@ -1,9 +1,12 @@
 import './App.css'
+import { Fretboard } from './components/Fretboard';
 
 function App() {
   // todo add fretboard
 
-  return <></>;
+  return <>
+    <Fretboard />
+  </>;
 }
 
 export default App
