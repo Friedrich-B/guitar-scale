@@ -44,3 +44,15 @@
         background-color: gold;
     }
 }
+
+.SelectorModal {
+    position: absolute;
+    top: 0; // todo place in center of the screen, shadow in the background
+    left: 0;
+    display: none;
+    width: 600px;
+    height: 400px;
+    background-color: orange;
+    border-radius: 20px;
+    z-index: 10000;
+}
