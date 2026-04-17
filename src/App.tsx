@@ -2,10 +2,14 @@ import './App.css'
 import { Fretboard } from './components/Fretboard';
 
 function App() {
-  // todo add fretboard
+  const tuning = ['E','A','D','G','B','E'];
+  const scale = [''];
 
   return <>
-    <Fretboard />
+    <Fretboard
+      tuning={tuning}
+      scale={scale}
+    />
   </>;
 }
 

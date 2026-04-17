@@ -4,6 +4,8 @@ import s from './Fret.module.scss'
 
 interface Props {
     fretNumber: number,
+    notes: string[],
+    scale: string[],
 }
 
 
