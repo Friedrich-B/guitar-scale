@@ -1,6 +1,6 @@
-// export function style(classes: string[]): string {
-//     return classes.join(' ');
-// }
+export function style(classes: string[]): string {
+    return classes.join(' ');
+}
 
 export const NOTES = [
     'A',

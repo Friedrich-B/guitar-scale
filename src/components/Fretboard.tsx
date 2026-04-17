@@ -5,13 +5,12 @@ import { NOTES } from "../helper";
 
 
 interface Props {
-    tuning: string[], // as usual goes from lowest to highest string
+    tuning: string[],
     scale: string[],
 }
 
 
-// const FRET_COUNT = 24;
-const FRET_COUNT = 12; // only for testing, remove
+const FRET_COUNT = 24;
 
 
 const getNotesForFretboard = (tuning: string[]): string[][] => {
@@ -60,6 +59,7 @@ const getFretboard = (
                 fretNumber={fretIndex + 1}
                 notes={noteLookUp[fretIndex]}
                 scale={scale}
+                key={fretIndex}
             />
         );
     }
