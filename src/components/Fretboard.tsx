@@ -1,7 +1,8 @@
 import type { ReactElement } from "react";
 import { Fret } from "./Fret";
 import s from './Fretboard.module.scss';
-import { NOTES, safeCopy } from "../helper";
+import { NOTES } from "../helpers/NotesHelper";
+import { safeCopy } from "../helpers/OtherHelpers";
 
 
 interface Props {

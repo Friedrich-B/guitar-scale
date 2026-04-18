@@ -7,18 +7,3 @@ export function safeCopy<T>(value: T): T {
         JSON.stringify(value),
     );
 }
-
-export const NOTES = [
-    'A',
-    'A#',
-    'B',
-    'C',
-    'C#',
-    'D',
-    'D#',
-    'E',
-    'F',
-    'F#',
-    'G',
-    'G#',
-];

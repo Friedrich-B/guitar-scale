@@ -1,6 +1,6 @@
 import { useState, type CSSProperties, type ReactElement } from "react";
 import s from './TuningSelector.module.scss';
-import { safeCopy } from "../helper";
+import { safeCopy } from "../helpers/OtherHelpers";
 
 
 interface Props {
@@ -26,6 +26,7 @@ export function TuningSelector(props: Props): ReactElement {
         // the modal should have a custom selector
         // all notes displayed as square buttons, selected highlighted
         // click on new note selects it and closes modal
+        // maybe at some point add tuning patterns like drop, open and standard
     };
 
     // TODO now it would be nice to have NOTES as some kind of type

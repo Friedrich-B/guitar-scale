@@ -1,6 +1,6 @@
 import type { ReactElement } from "react";
 import s from './Fret.module.scss'
-import { style } from "../helper";
+import { style } from "../helpers/OtherHelpers";
 
 
 interface Props {
