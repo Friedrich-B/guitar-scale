@@ -1,3 +1,5 @@
+import { safeCopy } from "./OtherHelpers";
+
 // TODO: enum?
 export const NOTES = [
     'A',
@@ -14,9 +16,9 @@ export const NOTES = [
     'G#',
 ];
 
-enum Scales {
+export enum Scales {
     Major = 'Dur', // auch: Ionisch
-    NaturalMinor = 'Moll', // auch natürlich/Äolisch
+    NaturalMinor = 'Moll', // auch: natürlich/Äolisch
     Dorian = 'Dorisch',
     Phrygian = 'Phrygisch',
     Lydian ='Lydisch',
@@ -27,9 +29,10 @@ enum Scales {
     MajorPentatonic = 'Dur-Pentatonik',
     MinorPentatonic = 'Moll-Pentatonik',
     BluesMinor = 'Blues-Moll',
+    // TODO: might need to add a 'Custom' option
 }
 
-// maps scales to intervals in half-note-steps
+// maps scales to intervals in half-note-steps starting with root as 0
 const SCALE_INTERVALS: Record<Scales, number[]> = {
     [Scales.Major]: [0,2,4,5,7,9,11],
     [Scales.NaturalMinor]: [0,2,3,5,7,8,10],
@@ -46,11 +49,29 @@ const SCALE_INTERVALS: Record<Scales, number[]> = {
 };
 
 
-const getNotesForPatternAndRoot = (
+/*
+* Notes are rotated to get the root note in the first position.
+* Then the interval of the chosen scale is used to find the notes
+* of the scale.
+*/
+export const getNotesForPatternAndRoot = (
     rootNote: string,
     scale: Scales,
 ): string[] => {
-    //todo
+    const notes = safeCopy(NOTES);
+    const rootNoteIndex = notes.indexOf(rootNote);
 
-    return [];
+    const rotatedNotes = [
+        ...notes.slice(rootNoteIndex),
+        ...notes.splice(0, rootNoteIndex),
+    ];
+
+    const notesPartOfScale: string[] = [];
+    const interval = SCALE_INTERVALS[scale];
+
+    interval.map(
+        index => notesPartOfScale.push(rotatedNotes[index]),
+    );
+
+    return notesPartOfScale;
 }
