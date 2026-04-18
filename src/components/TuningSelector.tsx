@@ -1,6 +1,7 @@
 import { useState, type CSSProperties, type ReactElement } from "react";
 import s from './TuningSelector.module.scss';
-import { safeCopy } from "../helpers/OtherHelpers";
+import { safeCopy, style } from "../helpers/OtherHelpers";
+import { NOTES } from "../helpers/NotesHelper";
 
 
 interface Props {
@@ -17,7 +18,7 @@ export function TuningSelector(props: Props): ReactElement {
         ? {display: 'flex'}
         : {};
 
-    const openSelectorModal = (
+    const openModal = (
         note: string,
         stringIndex: number,
     ): void => {
@@ -29,7 +30,11 @@ export function TuningSelector(props: Props): ReactElement {
         // maybe at some point add tuning patterns like drop, open and standard
     };
 
-    // TODO now it would be nice to have NOTES as some kind of type
+    const closeModal = (): void => {
+        setSelectedNote(null);
+        setSelectedString(null);
+    };
+
     const setTuning = (
         newNote: string,
         stringIndex: number,
@@ -37,8 +42,7 @@ export function TuningSelector(props: Props): ReactElement {
         const newTuning = safeCopy(props.tuning);
         newTuning[stringIndex] = newNote;
 
-        setSelectedNote(null);
-        setSelectedString(null);
+        closeModal();
         props.setTuning(newTuning);
     };
 
@@ -46,11 +50,44 @@ export function TuningSelector(props: Props): ReactElement {
         return <div
             className={s.DisplayedNote}
             key={index}
-            onClick={() => openSelectorModal(rootNote, index)}
+            onClick={() => openModal(rootNote, index)}
         >
             {rootNote}
         </div>;
     }).reverse();
+
+    const renderModalNotes = (): ReactElement[] => {
+        const noteButtons: ReactElement[] = [];
+
+        NOTES.map((note, index) => {
+            const isSelected = note == selectedNote;
+
+            const buttonClasses = [
+                s.NoteButton,
+                isSelected ? s.SelectedNote : '',
+            ];
+
+            const clickHandler = () => {
+                if (isSelected) {
+                    closeModal();
+                }
+
+                setTuning(note, selectedString!);
+            }
+
+            noteButtons.push(
+                <div
+                    className={style(buttonClasses)}
+                    key={index}
+                    onClick={clickHandler}
+                >
+                    {note}
+                </div>
+            );
+        });
+
+        return noteButtons;
+    };
 
     return <div className={s.SelectorWrapper}>
         <div className={s.Selectors}>
@@ -61,8 +98,7 @@ export function TuningSelector(props: Props): ReactElement {
             className={s.SelectorModal}
             style={modalStyle}
         >
-            {/* render note buttons */}
-            note: {selectedNote} string: {selectedString}
+            {renderModalNotes()}
         </div>
     </div>;
 }
