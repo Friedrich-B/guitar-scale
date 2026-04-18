@@ -54,7 +54,7 @@ const SCALE_INTERVALS: Record<Scales, number[]> = {
 * Then the interval of the chosen scale is used to find the notes
 * of the scale.
 */
-export const getNotesForPatternAndRoot = (
+export const getNotesForScale = (
     rootNote: string,
     scale: Scales,
 ): string[] => {

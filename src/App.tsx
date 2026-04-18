@@ -2,16 +2,24 @@ import { useState } from 'react';
 import './App.css'
 import { Fretboard } from './components/Fretboard';
 import { TuningSelector } from './components/TuningSelector';
+import { ScaleSelector } from './components/ScaleSelector';
+
+
+const DEFAULT_TUNING = ['E','A','D','G','B','E'];
+const DEFAULT_SCALE: string[] = [];
 
 
 function App() {
-  // todo tuning and scale need to be set by user
+  // TODO: add scale selection, default: no scale selected
 
-  const [tuning, setTuning] = useState(['E','A','D','G','B','E']);
-  // const tuning = ['E','A','D','G','B','E'];
-  const scale = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
+  const [tuning, setTuning] = useState(DEFAULT_TUNING);
+  const [scale, setScale] = useState(DEFAULT_SCALE);
 
   return <>
+    <ScaleSelector
+      scale={scale}
+      setScale={setScale}
+    />
     <TuningSelector
       tuning={tuning}
       setTuning={setTuning}
