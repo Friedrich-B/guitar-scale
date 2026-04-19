@@ -1,5 +1,7 @@
-import type { ReactElement } from "react";
-import { getNotesForScale, Scales } from "../helpers/NotesHelper";
+import { useState, type CSSProperties, type ReactElement } from "react";
+import { getNotesForScale, NOTES, Scales } from "../helpers/NotesHelper";
+import s from './ScaleSelector.module.scss';
+import { style } from "../helpers/OtherHelpers";
 
 
 interface Props {
@@ -8,18 +10,41 @@ interface Props {
 }
 
 
-const DEBUG_ROOT_NOTE = 'A'; // TODO: make selectable
+const DEFAULT_ROOT_NOTE = 'A';
 
 
+// TODO: project needs some refactoring as 'scale' can refer to the Scale enum
+// or to a string[] containing notes
+// the uses of Scales enum should be named scaleName or somthing like that
 export function ScaleSelector(props: Props): ReactElement {
+    const [currentRootNote, setCurrentRootNote] = useState(DEFAULT_ROOT_NOTE);
+    const [showModal, setShowModal] = useState(false);
+    const [currentScale, setCurrentScale] = useState<Scales|null>(null);
+
+    const modalStyle: CSSProperties = showModal ? {display: 'flex'} : {};
+
+    const calculateScaleFromRootNote = (rootNote: string): void => {
+        if (currentScale == null) {
+            return;
+        }
+
+        const newScale = getNotesForScale(
+            rootNote,
+            currentScale,
+        );
+
+        props.setScale(newScale);
+    };
+
     const renderScaleButtons = (): ReactElement[] => {
         return Object.values(Scales).map((scale, index) => {
             const clickHandler = (): void => {
                 const newScale = getNotesForScale(
-                    DEBUG_ROOT_NOTE,
+                    currentRootNote,
                     scale,
                 );
 
+                setCurrentScale(scale);
                 props.setScale(newScale);
             };
 
@@ -33,7 +58,54 @@ export function ScaleSelector(props: Props): ReactElement {
         });
     }
 
+    const openModal = (): void => {
+        setShowModal(true);
+    };
+
+    const closeModal = (): void => {
+        setShowModal(false);
+    };
+
+    // TODO: maybe extract modal as single component since used twice
+    const renderModalContent = (): ReactElement[] => {
+        return NOTES.map((note, index) => {
+            const isSelectedNote = note == currentRootNote;
+
+            const buttonClasses = style([
+                s.NoteButton,
+                isSelectedNote ? s.SelectedNote : '',
+            ]);
+
+            const clickHandler = (): void => {
+                if (isSelectedNote) {
+                    closeModal();
+                }
+
+                calculateScaleFromRootNote(note);
+                setCurrentRootNote(note);
+                closeModal();
+            };
+
+            return <div
+                className={buttonClasses}
+                onClick={clickHandler}
+                key={index}
+            >
+                {note}
+            </div>;
+        });
+    };
+
     return <div>
+        <div onClick={openModal}>
+            {currentRootNote}
+        </div>
         {renderScaleButtons()}
+        <div
+            className={s.SelectorModal}
+            style={modalStyle}
+        >
+            {renderModalContent()}
+        </div>
     </div>;
 }
