@@ -1,3 +1,22 @@
+.ScalesContainer {
+    display: flex;
+    gap: 5px;
+
+    .Scale {
+        font-size: 18px;
+        padding: 8px 16px;
+        border: 1px solid lightgrey;
+        border-radius: 15px;
+        background-color: white;
+        color: black;
+
+        &.SelectedScale {
+            background-color: lightyellow;
+            border-color: orange;
+        }
+    }
+}
+
 .SelectorModal {
     position: absolute;
     top: 0; // todo place in center of the screen, shadow in the background

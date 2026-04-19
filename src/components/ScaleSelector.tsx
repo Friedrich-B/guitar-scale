@@ -36,8 +36,16 @@ export function ScaleSelector(props: Props): ReactElement {
         props.setScale(newScale);
     };
 
+    // TODO: add option to unselect a scale?
     const renderScaleButtons = (): ReactElement[] => {
         return Object.values(Scales).map((scale, index) => {
+            const isSelectedScale = scale == currentScale;
+
+            const scaleClasses = style([
+                s.Scale,
+                isSelectedScale ? s.SelectedScale : '',
+            ]);
+
             const clickHandler = (): void => {
                 const newScale = getNotesForScale(
                     currentRootNote,
@@ -49,7 +57,7 @@ export function ScaleSelector(props: Props): ReactElement {
             };
 
             return <div
-                className=""
+                className={scaleClasses}
                 onClick={clickHandler}
                 key={index}
             >
@@ -66,6 +74,9 @@ export function ScaleSelector(props: Props): ReactElement {
         setShowModal(false);
     };
 
+    // TODO: workflow for user would be easier if root note would not
+    //  rely on a modal. instead simply render all options similar to
+    //  how the scales are shown
     // TODO: maybe extract modal as single component since used twice
     const renderModalContent = (): ReactElement[] => {
         return NOTES.map((note, index) => {
@@ -100,7 +111,9 @@ export function ScaleSelector(props: Props): ReactElement {
         <div onClick={openModal}>
             {currentRootNote}
         </div>
-        {renderScaleButtons()}
+        <div className={s.ScalesContainer}>
+            {renderScaleButtons()}
+        </div>
         <div
             className={s.SelectorModal}
             style={modalStyle}

@@ -29,7 +29,6 @@ export enum Scales {
     MajorPentatonic = 'Dur-Pentatonik',
     MinorPentatonic = 'Moll-Pentatonik',
     BluesMinor = 'Blues-Moll',
-    // TODO: might need to add a 'Custom' option
 }
 
 // maps scales to intervals in half-note-steps starting with root as 0
