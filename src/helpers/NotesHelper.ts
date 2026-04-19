@@ -17,15 +17,15 @@ export const NOTES = [
 ];
 
 export enum Scales {
-    Major = 'Dur', // auch: Ionisch
-    NaturalMinor = 'Moll', // auch: natürlich/Äolisch
+    Major = 'Dur (Ionisch)',
+    NaturalMinor = 'Moll (Äolisch)',
     Dorian = 'Dorisch',
     Phrygian = 'Phrygisch',
     Lydian ='Lydisch',
     Mixolydian = 'Mixolydisch',
     Locrian = 'Lokrisch',
     HarmonicMinor = 'Harmonisch Moll',
-    MelodicMinor = 'Melodisch Moll', // auch: aufwärts
+    MelodicMinor = 'Melodisch Moll',
     MajorPentatonic = 'Dur-Pentatonik',
     MinorPentatonic = 'Moll-Pentatonik',
     BluesMinor = 'Blues-Moll',
