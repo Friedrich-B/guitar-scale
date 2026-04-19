@@ -1,3 +1,25 @@
+// TODO: add hover style to the buttons
+
+.NotesContainer {
+    display: flex;
+    gap: 5px;
+
+    .Note {
+        // TODO: same as for scales, exclude maybe
+        font-size: 18px;
+        padding: 8px 16px;
+        border: 1px solid lightgrey;
+        border-radius: 15px;
+        background-color: white;
+        color: black;
+
+        &.SelectedNote {
+            background-color: lightyellow;
+            border-color: orange;
+        }
+    }
+}
+
 .ScalesContainer {
     display: flex;
     gap: 5px;
@@ -13,34 +35,6 @@
         &.SelectedScale {
             background-color: lightyellow;
             border-color: orange;
-        }
-    }
-}
-
-.SelectorModal {
-    position: absolute;
-    top: 0; // todo place in center of the screen, shadow in the background
-    left: 0;
-    display: none;
-    width: 600px;
-    height: 400px;
-    background-color: orange;
-    border-radius: 20px;
-    z-index: 10000;
-
-    .NoteButton {
-        width: 40px;
-        height: 40px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 25px;
-        color: black;
-        background-color: white;
-        border: 1px solid lightgrey;
-
-        &.SelectedNote {
-            box-shadow: inset 5px 5px red, inset -5px -5px red;
         }
     }
 }

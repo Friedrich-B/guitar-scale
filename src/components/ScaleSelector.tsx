@@ -1,4 +1,4 @@
-import { useState, type CSSProperties, type ReactElement } from "react";
+import { useState, type ReactElement } from "react";
 import { getNotesForScale, NOTES, Scales } from "../helpers/NotesHelper";
 import s from './ScaleSelector.module.scss';
 import { style } from "../helpers/OtherHelpers";
@@ -18,10 +18,7 @@ const DEFAULT_ROOT_NOTE = 'A';
 // the uses of Scales enum should be named scaleName or somthing like that
 export function ScaleSelector(props: Props): ReactElement {
     const [currentRootNote, setCurrentRootNote] = useState(DEFAULT_ROOT_NOTE);
-    const [showModal, setShowModal] = useState(false);
     const [currentScale, setCurrentScale] = useState<Scales|null>(null);
-
-    const modalStyle: CSSProperties = showModal ? {display: 'flex'} : {};
 
     const calculateScaleFromRootNote = (rootNote: string): void => {
         if (currentScale == null) {
@@ -37,7 +34,7 @@ export function ScaleSelector(props: Props): ReactElement {
     };
 
     // TODO: add option to unselect a scale?
-    const renderScaleButtons = (): ReactElement[] => {
+    const renderScales = (): ReactElement[] => {
         return Object.values(Scales).map((scale, index) => {
             const isSelectedScale = scale == currentScale;
 
@@ -66,35 +63,22 @@ export function ScaleSelector(props: Props): ReactElement {
         });
     }
 
-    const openModal = (): void => {
-        setShowModal(true);
-    };
-
-    const closeModal = (): void => {
-        setShowModal(false);
-    };
-
-    // TODO: workflow for user would be easier if root note would not
-    //  rely on a modal. instead simply render all options similar to
-    //  how the scales are shown
-    // TODO: maybe extract modal as single component since used twice
-    const renderModalContent = (): ReactElement[] => {
+    const renderNotes = (): ReactElement[] => {
         return NOTES.map((note, index) => {
             const isSelectedNote = note == currentRootNote;
 
             const buttonClasses = style([
-                s.NoteButton,
+                s.Note,
                 isSelectedNote ? s.SelectedNote : '',
             ]);
 
             const clickHandler = (): void => {
                 if (isSelectedNote) {
-                    closeModal();
+                    return;
                 }
 
                 calculateScaleFromRootNote(note);
                 setCurrentRootNote(note);
-                closeModal();
             };
 
             return <div
@@ -108,17 +92,13 @@ export function ScaleSelector(props: Props): ReactElement {
     };
 
     return <div>
-        <div onClick={openModal}>
-            {currentRootNote}
+        Wähle einen Grundton:
+        <div className={s.NotesContainer}>
+            {renderNotes()}
         </div>
+        Wähle eine Tonleiter:
         <div className={s.ScalesContainer}>
-            {renderScaleButtons()}
-        </div>
-        <div
-            className={s.SelectorModal}
-            style={modalStyle}
-        >
-            {renderModalContent()}
+            {renderScales()}
         </div>
     </div>;
 }
