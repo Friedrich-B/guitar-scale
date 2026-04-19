@@ -1,0 +1,8 @@
+.GuitarContainer {
+    display: flex;
+
+    .FretBoard {
+        overflow: scroll;
+        scrollbar-width: none;
+    }
+}
