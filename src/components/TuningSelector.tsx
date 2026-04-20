@@ -10,29 +10,16 @@ interface Props {
 }
 
 
+// TODO: tuner highlighted when part of scale
+// TODO: style needs to adapt to string count (same for fret component)
+// TODO: FIX: somehow I broke the setTuning functionality as well as the highlighting
 export function TuningSelector(props: Props): ReactElement {
     const [selectedString, setSelectedString] = useState<number|null>(null);
     const [selectedNote, setSelectedNote] = useState<string|null>(null);
-    
-    const modalStyle: CSSProperties = selectedNote
-        ? {display: 'flex'}
-        : {};
-
-    const openModal = (
-        note: string,
-        stringIndex: number,
-    ): void => {
-        setSelectedString(stringIndex);
-        setSelectedNote(note);
-        // the modal should have a custom selector
-        // all notes displayed as square buttons, selected highlighted
-        // click on new note selects it and closes modal
-        // maybe at some point add tuning patterns like drop, open and standard
-    };
+    const [modalContent, setModalContent] = useState<ReactElement[]|null>(null);
 
     const closeModal = (): void => {
-        setSelectedNote(null);
-        setSelectedString(null);
+        setModalContent(null);
     };
 
     const setTuning = (
@@ -42,21 +29,10 @@ export function TuningSelector(props: Props): ReactElement {
         const newTuning = safeCopy(props.tuning);
         newTuning[stringIndex] = newNote;
 
-        closeModal();
         props.setTuning(newTuning);
     };
 
-    const tunigSelectors = props.tuning.map((rootNote, index) => {
-        return <div
-            className={s.DisplayedNote}
-            key={index}
-            onClick={() => openModal(rootNote, index)}
-        >
-            {rootNote}
-        </div>;
-    }).reverse();
-
-    const renderModalNotes = (): ReactElement[] => {
+    const renderNoteButtons = (onNoteClicked: (note: string) => void): ReactElement[] => {
         const noteButtons: ReactElement[] = [];
 
         NOTES.map((note, index) => {
@@ -72,7 +48,7 @@ export function TuningSelector(props: Props): ReactElement {
                     closeModal();
                 }
 
-                setTuning(note, selectedString!);
+                onNoteClicked(note);
             }
 
             noteButtons.push(
@@ -89,16 +65,73 @@ export function TuningSelector(props: Props): ReactElement {
         return noteButtons;
     };
 
-    return <div className={s.SelectorWrapper}>
-        <div className={s.Selectors}>
-            {...tunigSelectors}
-        </div>
-        <div className={s.Nut} />
-        <div
-            className={s.SelectorModal}
-            style={modalStyle}
+    const addString = (note: string): void => {
+        props.setTuning([
+            note,
+            ...props.tuning,
+        ]);
+
+        closeModal();
+    };
+
+    const changeTuning = (note: string): void => {
+        setTuning(note, selectedString!);
+        setSelectedString(null)
+        setSelectedNote(null);
+        closeModal();
+    };
+
+    const openModalToAddString = (): void => {
+        const content = renderNoteButtons(addString);
+
+        setModalContent(content);
+    }
+
+    const openModalToChangeTuning = (note: string, stringIndex: number): void => {
+        // TODO: selected note not highlighted anymore
+        // TODO: changin tuning not working anymore
+        setSelectedNote(note);
+        setSelectedString(stringIndex);
+
+        const content = renderNoteButtons(changeTuning);
+
+        setModalContent(content);
+    };
+
+    const tunigSelectors = props.tuning.map((rootNote, index) => {
+        return <div
+            className={s.DisplayedNote}
+            key={index}
+            onClick={() => openModalToChangeTuning(rootNote, index)}
         >
-            {renderModalNotes()}
+            {rootNote}
+        </div>;
+    }).reverse();
+
+    const modalStyle: CSSProperties = modalContent != null
+        ? {display: 'flex'}
+        : {};
+
+    // TODO: style this component properly
+    // modal should shadow layer underneath. when shadow clicked close modal / cancel action
+    return <div className={s.Container}>
+        <div className={s.SelectorWrapper}>
+            <div className={s.Selectors}>
+                {...tunigSelectors}
+            </div>
+            <div className={s.Nut} />
+            <div
+                className={s.Modal}
+                style={modalStyle}
+            >
+                {modalContent}
+            </div>
+        </div>
+        <div
+            className={s.AddStringButton}
+            onClick={openModalToAddString}
+        >
+            +
         </div>
     </div>;
 }
