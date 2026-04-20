@@ -10,35 +10,39 @@ interface Props {
 }
 
 
-const FRETS_WITH_INLAY = [
-    3,
-    5,
-    7,
-    9,
-    12,
-    15,
-    17,
-    19,
-    21,
-    24,
-];
+// const FRETS_WITH_INLAY = [
+//     3,
+//     5,
+//     7,
+//     9,
+//     12,
+//     15,
+//     17,
+//     19,
+//     21,
+//     24,
+// ];
 
 
 export function Fret(props: Props): ReactElement {
-    const hasInlay = FRETS_WITH_INLAY.indexOf(props.fretNumber) >= 0;
-    const inlay = hasInlay ? <div className={s.Inlay} /> : null;
+    // const hasInlay = FRETS_WITH_INLAY.indexOf(props.fretNumber) >= 0;
+    // const inlay = hasInlay ? <div className={s.Inlay} /> : null;
+    const inlay = null; // TODO: disable for now
     
     const notes = props.notes.map((note: string, index: number) => {
-        const className = [
-            s.Note,
+        const labelClasses = style([
+            s.Label,
             props.scale.indexOf(note) >= 0 ? s.Highlighted : '',
-        ];
+        ]);
 
         return <div
-            className={style(className)}
+            className={s.Note}
             key={`${index}-${note}`}
         >
-            {note}
+            <div className={labelClasses}>
+                {note}
+            </div>
+            <div className={s.Wire} />
         </div>;
     }).reverse();
 
@@ -46,12 +50,7 @@ export function Fret(props: Props): ReactElement {
         <div className={s.FretNumber}>
             {props.fretNumber}
         </div>
-        <div className={s.Fret}>
-            {inlay}
-            <div className={s.Notes}>
-                {notes}
-            </div>
-            <div className={s.Wire} />
-        </div>
+        {notes}
+        {/* {inlay} disabled for now */}
     </div>;
 }

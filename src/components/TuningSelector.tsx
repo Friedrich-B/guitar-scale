@@ -97,11 +97,16 @@ export function TuningSelector(props: Props): ReactElement {
 
     const tunigSelectors = props.tuning.map((rootNote, index) => {
         return <div
-            className={s.DisplayedNote}
+            className={s.SelectorRow}
             key={index}
-            onClick={() => openModalToChangeTuning(rootNote, index)}
         >
-            {rootNote}
+            <div
+                className={s.DisplayedNote}
+                onClick={() => openModalToChangeTuning(rootNote, index)}
+            >
+                {rootNote}
+            </div>
+            <div className={s.Nut} />
         </div>;
     }).reverse();
 
@@ -112,17 +117,14 @@ export function TuningSelector(props: Props): ReactElement {
     // TODO: style this component properly
     // modal should have shadow layer underneath. when shadow clicked close modal / cancel action
     return <div className={s.Container}>
+        <div className={s.Label}>
+            Stimmung
+        </div>
         <div className={s.SelectorWrapper}>
             <div className={s.Selectors}>
                 {...tunigSelectors}
             </div>
             <div className={s.Nut} />
-            <div
-                className={s.Modal}
-                style={modalStyle}
-            >
-                {modalContent}
-            </div>
         </div>
         <div
             className={s.AddStringButton}
@@ -130,5 +132,11 @@ export function TuningSelector(props: Props): ReactElement {
         >
             +
         </div>
+        <div
+                className={s.Modal}
+                style={modalStyle}
+            >
+                {modalContent}
+            </div>
     </div>;
 }
