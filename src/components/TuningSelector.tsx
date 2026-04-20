@@ -12,10 +12,7 @@ interface Props {
 
 // TODO: tuner highlighted when part of scale
 // TODO: style needs to adapt to string count (same for fret component)
-// TODO: FIX: somehow I broke the setTuning functionality as well as the highlighting
 export function TuningSelector(props: Props): ReactElement {
-    const [selectedString, setSelectedString] = useState<number|null>(null);
-    const [selectedNote, setSelectedNote] = useState<string|null>(null);
     const [modalContent, setModalContent] = useState<ReactElement[]|null>(null);
 
     const closeModal = (): void => {
@@ -32,11 +29,14 @@ export function TuningSelector(props: Props): ReactElement {
         props.setTuning(newTuning);
     };
 
-    const renderNoteButtons = (onNoteClicked: (note: string) => void): ReactElement[] => {
+    const renderNoteButtons = (
+        onNoteClicked: (note: string) => void,
+        noteToHighlight: string|null,
+    ): ReactElement[] => {
         const noteButtons: ReactElement[] = [];
 
         NOTES.map((note, index) => {
-            const isSelected = note == selectedNote;
+            const isSelected = noteToHighlight === note;
 
             const buttonClasses = [
                 s.NoteButton,
@@ -74,26 +74,23 @@ export function TuningSelector(props: Props): ReactElement {
         closeModal();
     };
 
-    const changeTuning = (note: string): void => {
-        setTuning(note, selectedString!);
-        setSelectedString(null)
-        setSelectedNote(null);
-        closeModal();
-    };
-
     const openModalToAddString = (): void => {
-        const content = renderNoteButtons(addString);
+        const content = renderNoteButtons(addString, null);
 
         setModalContent(content);
     }
 
     const openModalToChangeTuning = (note: string, stringIndex: number): void => {
-        // TODO: selected note not highlighted anymore
-        // TODO: changin tuning not working anymore
-        setSelectedNote(note);
-        setSelectedString(stringIndex);
+        const handler = (note: string): void => {
+            setTuning(
+                note,
+                stringIndex,
+            );
 
-        const content = renderNoteButtons(changeTuning);
+            closeModal();
+        };
+
+        const content = renderNoteButtons(handler, note);
 
         setModalContent(content);
     };
@@ -113,7 +110,7 @@ export function TuningSelector(props: Props): ReactElement {
         : {};
 
     // TODO: style this component properly
-    // modal should shadow layer underneath. when shadow clicked close modal / cancel action
+    // modal should have shadow layer underneath. when shadow clicked close modal / cancel action
     return <div className={s.Container}>
         <div className={s.SelectorWrapper}>
             <div className={s.Selectors}>
