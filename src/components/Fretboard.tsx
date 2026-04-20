@@ -76,12 +76,3 @@ export function Fretboard(props: Props): ReactElement {
         {...frets}
     </div>;
 }
-
-/*
-to be able to highlight the right frets I need the tuning and the scale
-tuning e.g. ['E','A','D','G','B','E']
-scale e.g. ['A', 'C#', 'G', ...]
-
-the tuning information is needed to set the correct note pre string and fret
-the scale will be used as lookup for highlighting
-*/

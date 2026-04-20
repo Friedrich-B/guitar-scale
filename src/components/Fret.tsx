@@ -42,11 +42,16 @@ export function Fret(props: Props): ReactElement {
         </div>;
     }).reverse();
 
-    return <div className={s.Fret}>
-        {inlay}
-        <div className={s.Notes}>
-            {notes}
+    return <div className={s.Container}>
+        <div className={s.FretNumber}>
+            {props.fretNumber}
         </div>
-        <div className={s.Wire} />
+        <div className={s.Fret}>
+            {inlay}
+            <div className={s.Notes}>
+                {notes}
+            </div>
+            <div className={s.Wire} />
+        </div>
     </div>;
 }
