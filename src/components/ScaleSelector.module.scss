@@ -1,40 +1,50 @@
 // TODO: add hover style to the buttons
 
-.NotesContainer {
+.Wrapper {
     display: flex;
-    gap: 5px;
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
 
-    .Note {
-        // TODO: same as for scales, exclude maybe
-        font-size: 18px;
-        padding: 8px 16px;
-        border: 1px solid lightgrey;
-        border-radius: 15px;
-        background-color: white;
-        color: black;
+    .NotesContainer {
+        display: flex;
+        gap: 5px;
 
-        &.SelectedNote {
-            background-color: lightyellow;
-            border-color: orange;
+        .Note {
+            // TODO: same as for scales, exclude maybe
+            font-size: 18px;
+            padding: 8px 16px;
+            border: 1px solid lightgrey;
+            border-radius: 15px;
+            background-color: white;
+            color: black;
+
+            &.SelectedNote {
+                background-color: lightyellow;
+                border-color: orange;
+            }
         }
     }
-}
 
-.ScalesContainer {
-    display: flex;
-    gap: 5px;
+    .ScalesContainer {
+        display: flex;
+        gap: 5px;
+        width: 80vw;
+        flex-wrap: wrap;
+        justify-content: center;
 
-    .Scale {
-        font-size: 18px;
-        padding: 8px 16px;
-        border: 1px solid lightgrey;
-        border-radius: 15px;
-        background-color: white;
-        color: black;
+        .Scale {
+            font-size: 18px;
+            padding: 8px 16px;
+            border: 1px solid lightgrey;
+            border-radius: 15px;
+            background-color: white;
+            color: black;
 
-        &.SelectedScale {
-            background-color: lightyellow;
-            border-color: orange;
+            &.SelectedScale {
+                background-color: lightyellow;
+                border-color: orange;
+            }
         }
     }
 }

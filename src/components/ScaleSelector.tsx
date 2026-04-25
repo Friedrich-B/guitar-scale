@@ -91,7 +91,7 @@ export function ScaleSelector(props: Props): ReactElement {
         });
     };
 
-    return <div>
+    return <div className={s.Wrapper}>
         Wähle einen Grundton:
         <div className={s.NotesContainer}>
             {renderNotes()}
