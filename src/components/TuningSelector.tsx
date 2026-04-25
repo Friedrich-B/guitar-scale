@@ -74,6 +74,14 @@ export function TuningSelector(props: Props): ReactElement {
         closeModal();
     };
 
+    const deleteString = (stringIndex: number): void => {
+        const newTuning = safeCopy(props.tuning);
+
+        newTuning.splice(stringIndex, 1);
+
+        props.setTuning(newTuning);
+    };
+
     const openModalToAddString = (): void => {
         const content = renderNoteButtons(addString, null);
 
@@ -96,10 +104,22 @@ export function TuningSelector(props: Props): ReactElement {
     };
 
     const tunigSelectors = props.tuning.map((rootNote, index) => {
+        const showDeleteButton = index < (props.tuning.length - 6);
+
+        const deleteButton = showDeleteButton ? (
+                <div
+                    className={s.DeleteButton}
+                    onClick={() => deleteString(index)}
+                >
+                    d
+                </div>
+            ): null;
+
         return <div
             className={s.SelectorRow}
             key={index}
         >
+            {deleteButton}
             <div
                 className={s.DisplayedNote}
                 onClick={() => openModalToChangeTuning(rootNote, index)}
