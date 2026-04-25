@@ -24,6 +24,7 @@ function App() {
       <TuningSelector
         tuning={tuning}
         setTuning={setTuning}
+        scale={scale}
       />
       <div className={s.FretBoard}>
         <Fretboard

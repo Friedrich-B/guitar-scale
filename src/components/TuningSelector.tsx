@@ -7,11 +7,10 @@ import { NOTES } from "../helpers/NotesHelper";
 interface Props {
     tuning: string[],
     setTuning: (tuning: string[]) => void,
+    scale: string[],
 }
 
 
-// TODO: tuner highlighted when part of scale
-// TODO: style needs to adapt to string count (same for fret component)
 export function TuningSelector(props: Props): ReactElement {
     const [modalContent, setModalContent] = useState<ReactElement[]|null>(null);
 
@@ -115,13 +114,18 @@ export function TuningSelector(props: Props): ReactElement {
                 </div>
             ): null;
 
+        const noteClasses = style([
+            s.DisplayedNote,
+            props.scale.includes(rootNote) ? s.Highlighted : ''
+        ]);
+
         return <div
             className={s.SelectorRow}
             key={index}
         >
             {deleteButton}
             <div
-                className={s.DisplayedNote}
+                className={noteClasses}
                 onClick={() => openModalToChangeTuning(rootNote, index)}
             >
                 {rootNote}

@@ -33,7 +33,6 @@ export function ScaleSelector(props: Props): ReactElement {
         props.setScale(newScale);
     };
 
-    // TODO: add option to unselect a scale?
     const renderScales = (): ReactElement[] => {
         return Object.values(Scales).map((scale, index) => {
             const isSelectedScale = scale == currentScale;
